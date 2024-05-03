@@ -1,0 +1,25 @@
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-23.11:nixpkgs-unstable=channel:nixos-unstable
+
+      - uses: rrbutani/use-nix-shell-action@v1
+        with:
+          file: default.nix
+
+      - name: ensure all pre-commit hooks pass
+        run: pre-commit run --all-files --show-diff-on-failure
