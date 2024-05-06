@@ -20,7 +20,11 @@ in
 pkgs.mkShell {
   NIX_SHELL = "terraform-meshplatform-modules";
   shellHook = ''
-    echo starting terraform-meshplatform-modules dev shell
+    echo starting terraform-meshplatform-modules shell
+    terraform -v
+    tofu -v
+    terraform-docs -v
+    pre-commit --version
   '';
 
   buildInputs = [
