@@ -10,16 +10,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
+        with: 
           submodules: 'true'
 
-      - uses: cachix/install-nix-action@v18
+      - uses: nixbuild/nix-quick-install-action@v26
         with:
-          nix_path: nixpkgs=channel:nixos-23.11:nixpkgs-unstable=channel:nixos-unstable
+          nix_on_tmpfs: true
 
       - uses: rrbutani/use-nix-shell-action@v1
         with:
-          file: default.nix
+          devShell: .#github_actions # use a special github actions shell
 
       - name: ensure all pre-commit hooks pass
         run: pre-commit run --all-files --show-diff-on-failure
